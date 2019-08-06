@@ -1,9 +1,12 @@
 <template>
   <div>
     <button @click="goToHome">Home</button>
-    <h1>This is my profile</h1>
-    <p>{{ currentUser.name }}</p>
-    <p>{{ currentUser.email }}</p>
+    <h1>{{ currentUser.name }}'s Profile</h1>
+    <p><strong>Name:</strong> {{ currentUser.name }}</p>
+    <p><strong>Email:</strong> {{ currentUser.email }}</p>
+    <p><strong>Username:</strong> {{ currentUser.username }}</p>
+    <!-- Edit Profile/Username/Email/Password/Name -->
+    <!-- Add and display a profile image -->
   </div>
 </template>
 

@@ -4,23 +4,30 @@
       <button @click="submitLogout">Log out</button>
       <button @click="goToProfile">Profile</button>
     </div>
-    <h1>Todo App</h1>
-    <h2>My Lists</h2>
-    <div v-if="currentUserLists.length">
+    <h1>My Lists</h1>
+    <div v-if="ownersLists.length">
       <div
-        v-for="list in currentUserLists"
+        v-for="list in ownersLists"
         :key="list.id"
       >
         <a
           class="list"
-          @click="openList(list.id)"
-        >{{ list.name }}</a>
+          @click="openList(list._id)"
+        >
+          <p>{{ list.name }}</p>
+        </a>
       </div>
-      <button @click="openAddList">Add a new list</button>
+      <button
+        v-if="!addList"
+        @click="openAddList"
+      >Add a new list</button>
     </div>
     <div v-else>
-      <p>You don't have any lists right now.</p>
-      <button @click="openAddList">Add a list</button>
+      <p>You have not added any lists.</p>
+      <button
+        v-if="!addList"
+        @click="openAddList"
+      >Add a list</button>
     </div>
     <div v-if="addList">
       <input
@@ -29,6 +36,18 @@
         placeholder="List Name"
       />
       <button @click="createList">Create list</button>
+    </div>
+    <h2 v-if="sharedLists.length">Shared Lists</h2>
+    <div v-if="sharedLists.length">
+      <div
+        v-for="list in sharedLists"
+        :key="list.id"
+      >
+        <a
+          class="list"
+          @click="openList(list._id)"
+        >{{ list.name }}</a>
+      </div>
     </div>
   </div>
 </template>
@@ -46,11 +65,13 @@ export default {
     await this.init()
   },
   computed: {
-    ...mapState('users', ['userToken', 'currentUser', 'currentUserLists'])
+    ...mapState('users', ['userToken', 'currentUser']),
+    ...mapState('lists', ['ownersLists', 'sharedLists'])
   },
   methods: {
     ...mapActions('users', ['logout', 'updateCurrentUser', 'verifyUserToken']),
-    ...mapActions('lists', ['createNewList']),
+    ...mapActions('lists', ['createNewList', 'getList']),
+    ...mapActions('todos', ['getListTodos']),
     async init() {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -73,15 +94,17 @@ export default {
     async createList() {
       const paylaod = {
         name: this.listName,
-        owner: { name: this.currentUser.name, id: this.currentUser._id }
+        ownerId: this.currentUser._id
       }
       await this.createNewList(paylaod)
       this.addList = false
       this.listName = ''
       await this.updateCurrentUser(this.currentUser._id)
     },
-    openList(id) {
-      console.log('id', id)
+    async openList(id) {
+      await this.getList(id)
+      await this.getListTodos(id)
+      this.$router.push('/list')
     }
   }
 }

@@ -1,7 +1,10 @@
 import { Api } from './api-service'
 
 export default {
-  getTodos(token) {
-    return Api.get('/todos', { headers: { token } })
+  getListTodos(id) {
+    return Api.get(`/lists/${id}/todos`)
+  },
+  addTodo(payload) {
+    return Api.post('/todos', payload)
   }
 }

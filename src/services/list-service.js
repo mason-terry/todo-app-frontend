@@ -1,10 +1,10 @@
 import { Api } from './api-service'
 
 export default {
-  getLists() {
-    return Api.get('/lists')
+  getLists(id) {
+    return Api.get(`/users/${id}/lists`)
   },
-  getUsersLists(id) {
+  getList(id) {
     return Api.get(`/lists/${id}`)
   },
   addList(payload) {

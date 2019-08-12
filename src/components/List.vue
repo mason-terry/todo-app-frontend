@@ -1,33 +1,61 @@
 <template>
-  <div>
-    <button @click="goToHome">Home</button>
+  <div v-if="currentList">
+    <button @click="goToHome">My Lists</button>
     <h1>{{ currentList.name }}</h1>
     <div v-if="listTodos.length">
       <div
         v-for="todo in listTodos"
         :key="todo._id"
       >
-        <p>{{ todo.item }}</p>
+        <div v-if="todo.completed">
+          <p class="complete uk-list">{{ todo.item }}
+            <button
+              class="uk-margin-small-right"
+              uk-icon="trash"
+              @click="deleteItem(todo._id)"
+            ></button>
+          </p>
+        </div>
+        <div v-else>
+          <p class="uk-list">{{ todo.item }}
+            <button
+              class="uk-margin-small-right"
+              uk-icon="check"
+              @click="completeItem(todo._id)"
+            ></button>
+            <button
+              class="uk-margin-small-right"
+              uk-icon="trash"
+              @click="deleteItem(todo._id)"
+            ></button>
+          </p>
+        </div>
       </div>
       <button
+        class="uk-button uk-button-default uk-button-small"
         v-if="!openInput"
         @click="openTodoInput"
-      >Add Another Todo</button>
+      >Add Another Item</button>
     </div>
     <div v-else>
-      <p>You don't have any todo's yet</p>
+      <p>Add some items to your list.</p>
       <button
+        class="uk-button uk-button-default uk-button-small"
         v-if="!openInput"
         @click="openTodoInput"
-      >Add A Todo</button>
+      >Add An Item</button>
     </div>
     <div v-if="openInput">
       <input
+        class="uk-input uk-form-width-medium"
         type="text"
         v-model="todo"
-        placeholder="Todo"
+        placeholder="Item"
       >
-      <button @click="createTodo">Add Todo</button>
+      <button
+        class="uk-button uk-button-default uk-button-small"
+        @click="createTodo"
+      >Add Item</button>
     </div>
   </div>
 </template>
@@ -46,8 +74,16 @@ export default {
     ...mapState('users', ['currentUser']),
     ...mapState('todos', ['listTodos'])
   },
+  created() {
+    this.init()
+  },
   methods: {
-    ...mapActions('todos', ['addTodo']),
+    ...mapActions('todos', ['addTodo', 'completeTodo', 'deleteTodo']),
+    init() {
+      if (!this.currentList) {
+        this.goToHome()
+      }
+    },
     goToHome() {
       this.$router.push('/')
     },
@@ -63,7 +99,27 @@ export default {
       await this.addTodo(payload)
       this.todo = ''
       this.openInput = false
+    },
+    async completeItem(todoId) {
+      const listId = this.currentList._id
+      const payload = { todoId, listId }
+      await this.completeTodo(payload)
+    },
+    async deleteItem(todoId) {
+      const listId = this.currentList._id
+      const payload = { todoId, listId }
+      await this.deleteTodo(payload)
     }
   }
 }
 </script>
+
+<style scoped>
+.complete {
+  text-decoration: line-through;
+}
+
+button {
+  cursor: pointer;
+}
+</style>

@@ -19,7 +19,9 @@ export default {
   },
   actions: {
     async createNewList({ commit }, payload) {
-      await ListService.addList(payload)
+      const response = await ListService.addList(payload)
+      const newList = response.data.newList
+      commit('setCurrentList', newList)
     },
     async getList({ commit }, id) {
       const response = await ListService.getList(id)

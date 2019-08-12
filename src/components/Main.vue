@@ -10,14 +10,15 @@
         v-for="list in ownersLists"
         :key="list.id"
       >
-        <a
-          class="list"
+        <p
+          class="list uk-list"
           @click="openList(list._id)"
         >
-          <p>{{ list.name }}</p>
-        </a>
+          <span>{{ list.name }}</span>
+        </p>
       </div>
       <button
+        class="uk-button uk-button-default uk-button-small"
         v-if="!addList"
         @click="openAddList"
       >Add a new list</button>
@@ -25,17 +26,22 @@
     <div v-else>
       <p>You have not added any lists.</p>
       <button
+        class="uk-button uk-button-default uk-button-small"
         v-if="!addList"
         @click="openAddList"
       >Add a list</button>
     </div>
     <div v-if="addList">
       <input
+        class="uk-input uk-form-width-medium"
         type="text"
         v-model="listName"
         placeholder="List Name"
       />
-      <button @click="createList">Create list</button>
+      <button
+        class="uk-button uk-button-default uk-button-small"
+        @click="createList"
+      >Create list</button>
     </div>
     <h2 v-if="sharedLists.length">Shared Lists</h2>
     <div v-if="sharedLists.length">
@@ -99,7 +105,7 @@ export default {
       await this.createNewList(paylaod)
       this.addList = false
       this.listName = ''
-      await this.updateCurrentUser(this.currentUser._id)
+      this.$router.push('/list')
     },
     async openList(id) {
       await this.getList(id)

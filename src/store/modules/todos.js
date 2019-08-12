@@ -20,6 +20,18 @@ export default {
       const response = await TodoService.getListTodos(id)
       const todos = response.data
       commit('setListTodos', todos)
+    },
+    async completeTodo({ dispatch }, payload) {
+      const todoId = payload.todoId
+      const listId = payload.listId
+      await TodoService.completeTodo(todoId)
+      dispatch('getListTodos', listId)
+    },
+    async deleteTodo({ dispatch }, payload) {
+      const todoId = payload.todoId
+      const listId = payload.listId
+      await TodoService.deleteTodo(todoId)
+      dispatch('getListTodos', listId)
     }
   }
 }

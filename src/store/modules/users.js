@@ -50,7 +50,6 @@ export default {
       const response = await UserService.getUser(id)
       const user = response.data
       commit('setCurrentUser', user)
-      // commit('setCurrentUserLists', user.lists)
       dispatch('lists/getUserLists', id, { root: true })
     }
   }

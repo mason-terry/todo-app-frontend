@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     ...mapState('users', ['userToken', 'currentUser']),
-    ...mapState('lists', ['ownersLists', 'sharedLists'])
+    ...mapState('lists', ['ownersLists', 'sharedLists', 'currentList'])
   },
   methods: {
     ...mapActions('users', ['logout', 'updateCurrentUser', 'verifyUserToken']),

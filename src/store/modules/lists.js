@@ -33,6 +33,12 @@ export default {
       const response = await ListService.getLists(id)
       const listData = response.data
       commit('setUserLists', listData)
+    },
+    async deleteList({ dispatch }, payload) {
+      const userId = payload.userId
+      const listId = payload.listId
+      await ListService.deleteList(listId)
+      dispatch('getUserLists', userId)
     }
   }
 }

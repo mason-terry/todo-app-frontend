@@ -12,5 +12,8 @@ export default {
   },
   userLogin(payload) {
     return Api.post('/users/login', payload)
+  },
+  addUser(payload) {
+    return Api.post('/users', payload)
   }
 }

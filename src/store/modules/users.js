@@ -51,6 +51,11 @@ export default {
       const user = response.data
       commit('setCurrentUser', user)
       dispatch('lists/getUserLists', id, { root: true })
+    },
+    async addUser({ commit }, payload) {
+      const response = await UserService.addUser(payload)
+      const user = response.data.newUser
+      commit('setCurrentUser', user)
     }
   }
 }

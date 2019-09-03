@@ -9,5 +9,8 @@ export default {
   },
   addList(payload) {
     return Api.post('/lists', payload)
+  },
+  deleteList(id) {
+    return Api.post(`/lists/${id}`)
   }
 }

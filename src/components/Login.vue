@@ -19,7 +19,10 @@
       class="uk-button uk-button-primary uk-button-small uk-margin-top"
       @click="submitLogin"
     >Login</button>
-    <button class="uk-button uk-button-default uk-button-small uk-margin-top uk-margin-left">New User</button>
+    <button
+      class="uk-button uk-button-default uk-button-small uk-margin-top uk-margin-left"
+      @click="newUser"
+    >New User</button>
     <p>{{ message }}</p>
   </div>
 </template>
@@ -55,6 +58,9 @@ export default {
     resetLoginFields() {
       this.username = ''
       this.password = ''
+    },
+    newUser() {
+      this.$router.push('/newuser')
     }
   }
 }

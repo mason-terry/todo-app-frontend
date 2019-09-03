@@ -1,8 +1,15 @@
 <template>
   <div>
     <div>
-      <button @click="submitLogout">Log out</button>
-      <button @click="goToProfile">Profile</button>
+      <button
+        class="uk-margin-small-right"
+        uk-icon="user"
+        @click="goToProfile"
+      ></button>
+      <button
+        uk-icon="sign-out"
+        @click="submitLogout"
+      ></button>
     </div>
     <h1>My Lists</h1>
     <div v-if="ownersLists.length">
@@ -10,11 +17,16 @@
         v-for="list in ownersLists"
         :key="list.id"
       >
-        <p
-          class="list uk-list"
-          @click="openList(list._id)"
-        >
-          <span>{{ list.name }}</span>
+        <p class="uk-list">
+          <span
+            class="list"
+            @click="openList(list._id)"
+          >{{ list.name }}</span>&nbsp;
+          <button
+            class="uk-margin-small-right"
+            uk-icon="trash"
+            @click="deleteUserList(list._id)"
+          ></button>
         </p>
       </div>
       <button
@@ -76,7 +88,7 @@ export default {
   },
   methods: {
     ...mapActions('users', ['logout', 'updateCurrentUser', 'verifyUserToken']),
-    ...mapActions('lists', ['createNewList', 'getList']),
+    ...mapActions('lists', ['createNewList', 'getList', 'deleteList']),
     ...mapActions('todos', ['getListTodos']),
     async init() {
       const token = localStorage.getItem('token')
@@ -111,6 +123,10 @@ export default {
       await this.getList(id)
       await this.getListTodos(id)
       this.$router.push('/list')
+    },
+    async deleteUserList(id) {
+      const payload = { userId: this.currentUser._id, listId: id }
+      await this.deleteList(payload)
     }
   }
 }

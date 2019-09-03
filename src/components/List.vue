@@ -1,6 +1,9 @@
 <template>
   <div v-if="currentList">
-    <button @click="goToHome">My Lists</button>
+    <button
+      uk-icon="list"
+      @click="goToHome"
+    ></button>
     <h1>{{ currentList.name }}</h1>
     <div v-if="listTodos.length">
       <div
@@ -8,15 +11,9 @@
         :key="todo._id"
       >
         <div v-if="todo.completed">
-          <p class="complete uk-list">{{ todo.item }}
-            <button
-              class="uk-margin-small-right"
-              uk-icon="trash"
-              @click="deleteItem(todo._id)"
-            ></button>
-          </p>
+          <p class="uk-list complete">{{ todo.item }}</p>
         </div>
-        <div v-else>
+        <div v-if="!todo.completed">
           <p class="uk-list">{{ todo.item }}
             <button
               class="uk-margin-small-right"
@@ -56,6 +53,12 @@
         class="uk-button uk-button-default uk-button-small"
         @click="createTodo"
       >Add Item</button>
+    </div>
+    <div>
+      <button
+        class="uk-button uk-button-default uk-button-small"
+        @click="shareList"
+      >Share List</button>
     </div>
   </div>
 </template>
@@ -109,6 +112,9 @@ export default {
       const listId = this.currentList._id
       const payload = { todoId, listId }
       await this.deleteTodo(payload)
+    },
+    async shareList() {
+      alert('sharing list')
     }
   }
 }

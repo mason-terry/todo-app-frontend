@@ -1,6 +1,9 @@
 <template>
   <div>
-    <button @click="goToHome">My Lists</button>
+    <button
+      uk-icon="list"
+      @click="goToHome"
+    ></button>
     <h1>{{ currentUser.name }}'s Profile</h1>
     <p><strong>Name:</strong> {{ currentUser.name }}</p>
     <p><strong>Email:</strong> {{ currentUser.email }}</p>

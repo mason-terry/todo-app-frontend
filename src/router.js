@@ -53,6 +53,11 @@ export default new Router({
           next()
         }
       }
+    },
+    {
+      path: '/newuser',
+      name: 'NewUser',
+      component: () => import('./components/NewUser'),
     }
   ]
 })

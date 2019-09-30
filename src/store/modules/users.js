@@ -54,8 +54,9 @@ export default {
     },
     async addUser({ commit }, payload) {
       const response = await UserService.addUser(payload)
-      const user = response.data.newUser
-      commit('setCurrentUser', user)
+      const { newUser, token } = response.data
+      commit('setCurrentUserToken', token)
+      commit('setCurrentUser', newUser)
     }
   }
 }

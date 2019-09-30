@@ -6,6 +6,8 @@
       type="text"
       placeholder="Username"
       v-model="username"
+      autocapitalize="off"
+      autofocus
     />
     <br />
     <input

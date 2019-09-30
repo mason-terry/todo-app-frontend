@@ -10,9 +10,6 @@
         v-for="todo in listTodos"
         :key="todo._id"
       >
-        <div v-if="todo.completed">
-          <p class="uk-list complete">{{ todo.item }}</p>
-        </div>
         <div v-if="!todo.completed">
           <p class="uk-list">{{ todo.item }}
             <button
@@ -28,6 +25,14 @@
           </p>
         </div>
       </div>
+      <div
+        v-for="todo in listTodos"
+        :key="todo._id"
+      >
+        <div v-if="todo.completed">
+          <p class="uk-list complete">{{ todo.item }}</p>
+        </div>
+      </div>
       <button
         class="uk-button uk-button-default uk-button-small"
         v-if="!openInput"
@@ -37,7 +42,7 @@
     <div v-else>
       <p>Add some items to your list.</p>
       <button
-        class="uk-button uk-button-default uk-button-small"
+        class="uk-button uk-button-default uk-button-small button"
         v-if="!openInput"
         @click="openTodoInput"
       >Add An Item</button>
@@ -48,15 +53,16 @@
         type="text"
         v-model="todo"
         placeholder="Item"
+        autofocus
       >
       <button
-        class="uk-button uk-button-default uk-button-small"
+        class="uk-button uk-button-default uk-button-small button"
         @click="createTodo"
       >Add Item</button>
     </div>
     <div>
       <button
-        class="uk-button uk-button-default uk-button-small"
+        class="uk-button uk-button-default uk-button-small button"
         @click="shareList"
       >Share List</button>
     </div>
@@ -123,6 +129,10 @@ export default {
 <style scoped>
 .complete {
   text-decoration: line-through;
+}
+
+.button {
+  margin: 10px 0;
 }
 
 button {

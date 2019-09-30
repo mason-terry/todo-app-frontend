@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'NewUser',
@@ -49,6 +49,9 @@ export default {
     password: '',
     message: ''
   }),
+  computed: {
+    ...mapState('users', ['userToken'])
+  },
   methods: {
     ...mapActions('users', ['addUser']),
     inputCheck() {
@@ -67,6 +70,7 @@ export default {
       }
       if (this.inputCheck()) {
         await this.addUser(payload)
+        localStorage.setItem('token', this.userToken)
         this.$router.push('/')
       } else {
         alert('Please fill out all forms.')

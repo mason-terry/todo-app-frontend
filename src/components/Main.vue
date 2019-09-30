@@ -49,6 +49,7 @@
         type="text"
         v-model="listName"
         placeholder="List Name"
+        autofocus
       />
       <button
         class="uk-button uk-button-default uk-button-small"

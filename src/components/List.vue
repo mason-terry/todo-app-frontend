@@ -33,54 +33,36 @@
           <p class="uk-list complete">{{ todo.item }}</p>
         </div>
       </div>
-      <button
-        class="uk-button uk-button-default uk-button-small"
-        v-if="!openInput"
-        @click="openTodoInput"
-      >Add Another Item</button>
+      <add-button
+        type="add-todo"
+        openButton="Add Another Todo"
+        addButton="Add Todo"
+        placeHolder="Todo"
+      ></add-button>
     </div>
     <div v-else>
       <p>Add some items to your list.</p>
-      <button
-        class="uk-button uk-button-default uk-button-small button"
-        v-if="!openInput"
-        @click="openTodoInput"
-      >Add An Item</button>
-    </div>
-    <div v-if="openInput">
-      <input
-        class="uk-input uk-form-width-medium"
-        type="text"
-        v-model="todo"
-        placeholder="Item"
-        autofocus
-      >
-      <button
-        class="uk-button uk-button-default uk-button-small button"
-        @click="createTodo"
-      >Add Item</button>
-    </div>
-    <div>
-      <button
-        class="uk-button uk-button-default uk-button-small button"
-        @click="shareList"
-      >Share List</button>
+      <add-button
+        type="add-todo"
+        openButton="Add A Todo"
+        addButton="Add Todo"
+        placeHolder="Todo"
+      ></add-button>
     </div>
   </div>
 </template>
 
 <script>
+import AddButton from './add-button'
 import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'List',
-  data: () => ({
-    openInput: false,
-    todo: ''
-  }),
+  components: {
+    AddButton
+  },
   computed: {
     ...mapState('lists', ['currentList']),
-    ...mapState('users', ['currentUser']),
     ...mapState('todos', ['listTodos'])
   },
   created() {
@@ -95,19 +77,6 @@ export default {
     },
     goToHome() {
       this.$router.push('/')
-    },
-    openTodoInput() {
-      this.openInput = true
-    },
-    async createTodo() {
-      const payload = {
-        item: this.todo,
-        listId: this.currentList._id,
-        userId: this.currentUser._id
-      }
-      await this.addTodo(payload)
-      this.todo = ''
-      this.openInput = false
     },
     async completeItem(todoId) {
       const listId = this.currentList._id

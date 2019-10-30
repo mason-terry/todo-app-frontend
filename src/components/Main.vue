@@ -29,32 +29,21 @@
           ></button>
         </p>
       </div>
-      <button
-        class="uk-button uk-button-default uk-button-small"
-        v-if="!addList"
-        @click="openAddList"
-      >Add a new list</button>
+      <add-button
+        type="add-list"
+        openButton="Add A List"
+        addButton="Create List"
+        placeHolder="List Name"
+      ></add-button>
     </div>
     <div v-else>
       <p>You have not added any lists.</p>
-      <button
-        class="uk-button uk-button-default uk-button-small"
-        v-if="!addList"
-        @click="openAddList"
-      >Add a list</button>
-    </div>
-    <div v-if="addList">
-      <input
-        class="uk-input uk-form-width-medium"
-        type="text"
-        v-model="listName"
-        placeholder="List Name"
-        autofocus
-      />
-      <button
-        class="uk-button uk-button-default uk-button-small"
-        @click="createList"
-      >Create list</button>
+      <add-button
+        type="add-list"
+        openButton="Add A New List"
+        addButton="Create List"
+        placeHolder="List Name"
+      ></add-button>
     </div>
     <h2 v-if="sharedLists.length">Shared Lists</h2>
     <div v-if="sharedLists.length">
@@ -72,24 +61,24 @@
 </template>
 
 <script>
+import AddButton from './add-button'
 import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Main',
-  data: () => ({
-    addList: false,
-    listName: ''
-  }),
+  components: {
+    AddButton
+  },
   async mounted() {
     await this.init()
   },
   computed: {
     ...mapState('users', ['userToken', 'currentUser']),
-    ...mapState('lists', ['ownersLists', 'sharedLists', 'currentList'])
+    ...mapState('lists', ['ownersLists', 'sharedLists'])
   },
   methods: {
     ...mapActions('users', ['logout', 'updateCurrentUser', 'verifyUserToken']),
-    ...mapActions('lists', ['createNewList', 'getList', 'deleteList']),
+    ...mapActions('lists', ['getList', 'deleteList']),
     ...mapActions('todos', ['getListTodos']),
     async init() {
       const token = localStorage.getItem('token')
@@ -109,16 +98,6 @@ export default {
     },
     openAddList() {
       this.addList = true
-    },
-    async createList() {
-      const paylaod = {
-        name: this.listName,
-        ownerId: this.currentUser._id
-      }
-      await this.createNewList(paylaod)
-      this.addList = false
-      this.listName = ''
-      this.$router.push('/list')
     },
     async openList(id) {
       await this.getList(id)

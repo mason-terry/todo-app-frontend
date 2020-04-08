@@ -6,7 +6,8 @@ export default {
     userToken: undefined,
     currentUser: {},
     currentUserLists: [],
-    loginMessage: ''
+    loginMessage: '',
+    allUsers: []
   },
   getters: {},
   mutations: {
@@ -21,6 +22,9 @@ export default {
     },
     setLoginMessage(state, message) {
       state.loginMessage = message
+    },
+    setAllUsers(state, list) {
+      state.allUsers = list
     }
   },
   actions: {
@@ -57,6 +61,10 @@ export default {
       const { newUser, token } = response.data
       commit('setCurrentUserToken', token)
       commit('setCurrentUser', newUser)
+    },
+    async getUsers({ commit }) {
+      const response = await UserService.getUsers()
+      commit('setAllUsers', response.data)
     }
   }
 }

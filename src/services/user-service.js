@@ -2,7 +2,7 @@ import { Api } from './api-service'
 
 export default {
   getUsers() {
-    return Api.get('/users')
+    return Api.get('/users/')
   },
   verifyToken(token) {
     return Api.get('/users/verify', { headers: { token } })

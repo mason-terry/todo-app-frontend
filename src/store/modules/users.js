@@ -45,10 +45,10 @@ export default {
       commit('setCurrentUserToken', undefined)
       commit('setCurrentUser', {})
     },
-    async verifyUserToken({ dispatch, state }, token) {
-      await UserService.verifyToken(token)
-      // const user = response.data.user
-      dispatch('updateCurrentUser', state.currentUser._id)
+    async verifyUserToken({ dispatch }, token) {
+      const response = await UserService.verifyToken(token)
+      const userId = response.data.user_id
+      dispatch('updateCurrentUser', userId)
     },
     async updateCurrentUser({ commit, dispatch }, id) {
       const response = await UserService.getUser(id)
